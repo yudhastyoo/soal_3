@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" :class="{ scrolled: isScrolled }">
     <div class="navbar">
       <img src="../assets/airbnb.png" width="200" />
       <nav>
@@ -40,10 +40,22 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
   name: "HeaderNavbar",
   setup() {
-    return {};
+    const isScrolled = ref(false);
+    const handleScroll = () => {
+      isScrolled.value =
+        document.body.scrollTop > 0 || document.documentElement.scrollTop > 0;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return {
+      isScrolled,
+    };
   },
 };
 </script>
@@ -56,6 +68,22 @@ export default {
   align-items: center;
   border-bottom: 1px solid #ccc;
   padding-bottom: 10px;
+  transition: height 400ms;
+  height: 180px;
+}
+
+.wrapper.scrolled {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff;
+  height: 100px;
+}
+
+.wrapper.scrolled .navbar nav {
+  transform: translateY(-100px);
 }
 
 .navbar {
@@ -63,6 +91,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-top: -50px;
 }
 
 nav {
@@ -71,6 +100,7 @@ nav {
   align-items: center;
   gap: 20px;
   cursor: pointer;
+  transition: transform 400ms;
 }
 
 .nav-1 {
@@ -107,6 +137,11 @@ nav {
   padding: 10px 20px;
   margin-top: -30px;
   box-shadow: 1px 6px 16px -4px rgba(0, 0, 0, 0.75);
+  transition: transform 400ms;
+}
+
+.wrapper.scrolled .search-bar {
+  transform: translateY(-80px) scale(0.7);
 }
 
 .search-box {
